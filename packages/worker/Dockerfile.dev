@@ -1,0 +1,6 @@
+# Dockerfile.<suffix> discovery + floating-tag posture (untagged real image → implicit latest)
+# + DL4006 (pipefail) hadolint rule. redis is docker.io (trusted), so no untrusted-registry here.
+FROM redis
+WORKDIR /app
+RUN echo hi | grep h
+CMD ["node", "server.js"]

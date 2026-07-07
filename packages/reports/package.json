@@ -1,0 +1,8 @@
+{
+  "name": "@fake-monorepo/reports",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "optimist": "0.6.1"
+  }
+}

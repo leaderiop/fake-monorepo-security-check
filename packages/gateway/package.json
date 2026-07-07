@@ -1,0 +1,17 @@
+{
+  "name": "@fake-monorepo/gateway",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "serve-static": "1.15.0"
+  },
+  "devDependencies": {
+    "minimist": "1.2.5"
+  },
+  "optionalDependencies": {
+    "axios": "0.21.0"
+  },
+  "peerDependencies": {
+    "lodash": "4.17.15"
+  }
+}

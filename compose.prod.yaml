@@ -1,0 +1,26 @@
+# compose.<name>.yaml discovery (case-insensitive) + profile-gated service (included via
+# --profile "*") + list-form inline-secret + trusted-registry NEGATIVE.
+services:
+  api:
+    # registry.internal.sanofi is in trustedRegistries -> NO untrusted-registry check.
+    # Tag 1.2.3 is numeric -> NOT floating. No digest -> no-digest-pin still fires (low).
+    image: registry.internal.sanofi/api:1.2.3
+    profiles:
+      - "prod"
+    environment:
+      # list-form: API_TOKEN matches the secret regex -> inline-secret fires;
+      # LOG_LEVEL is not a secret key -> no fire.
+      - "API_TOKEN=abcdef123456"
+      - "LOG_LEVEL=info"
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - "ALL"
+    security_opt:
+      - "no-new-privileges:true"
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    ports:
+      - "127.0.0.1:9000:9000"

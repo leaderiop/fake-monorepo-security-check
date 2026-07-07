@@ -1,0 +1,8 @@
+{
+  "name": "@fake-monorepo/svc",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "rc": "1.2.8"
+  }
+}

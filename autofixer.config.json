@@ -1,0 +1,23 @@
+{
+  "$schema": "./autofixer.config.schema.json",
+  "audit": {
+    "format": "json",
+    "failOnResidual": false
+  },
+  "plugins": {
+    "npm": {},
+    "osv": {},
+    "trivy": {},
+    "docker": {
+      "trustedRegistries": ["docker.io"],
+      "disabledRules": ["compose/read-only"]
+    },
+    "git": {
+      "push": { "remote": "origin" }
+    },
+    "github": {
+      "token": { "$env": "GITHUB_TOKEN" },
+      "pullRequest": { "base": "main", "draft": false }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+services:
+  # wideopen: fires every presence-based hardening rule plus all 5 absence rules
+  # (privileged, docker-socket, host-pid, unconfined, inline-secret map-form, public-port,
+  #  + no-new-privileges, cap-drop-all, no-root-user, read-only, no-resource-limits).
+  # Also image posture: nginx is untagged->latest (floating-tag) + no-digest-pin + docker.io untrusted.
+  wideopen:
+    image: nginx
+    privileged: true
+    pid: "host"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    security_opt:
+      - "seccomp:unconfined"
+    environment:
+      DB_PASSWORD: "hunter2"
+    ports:
+      - "8080:8080"
+
+  # host-network lives on its own service: `network_mode: host` cannot be combined with
+  # `ports:` or `docker compose config` rejects the whole file (dropping it from inventory).
+  hostnet:
+    image: redis:7
+    network_mode: "host"
+
+  # hardened: the NEGATIVE case — fires ZERO checks. Digest-pinned image (no posture),
+  # non-root user, read_only, cap_drop ALL, no-new-privileges, resource limits,
+  # ${VAR} secret ref (unresolved -> no inline-secret), loopback-only port (no public-port).
+  hardened:
+    image: "nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10"
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - "ALL"
+    security_opt:
+      - "no-new-privileges:true"
+    environment:
+      DB_PASSWORD: "${DB_PASSWORD:-}"
+    ports:
+      - "127.0.0.1:8080:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+  # builder: build-only service -> SKIPPED from image inventory (no posture), but the 5
+  # absence-based hardening rules still fire on it.
+  builder:
+    build: .

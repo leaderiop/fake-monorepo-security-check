@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": [
+            "json",
+            "cyclonedx",
+            "markdown",
+            "text"
+          ]
+        },
+        "fix": {
+          "type": "boolean"
+        },
+        "failOnResidual": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "onError": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": [
+          "die",
+          "ignore"
+        ]
+      }
+    },
+    "plugins": {
+      "type": "object",
+      "properties": {
+        "npm": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        },
+        "docker": {
+          "type": "object",
+          "properties": {
+            "hadolintPath": {
+              "type": "string",
+              "allOf": [
+                {
+                  "minLength": 1
+                }
+              ]
+            },
+            "trustedRegistries": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "allOf": [
+                  {
+                    "minLength": 1
+                  }
+                ]
+              }
+            },
+            "disabledRules": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "allOf": [
+                  {
+                    "minLength": 1
+                  }
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "ghsa": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "object",
+              "properties": {
+                "$env": {
+                  "type": "string",
+                  "allOf": [
+                    {
+                      "minLength": 1
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "$env"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "osv": {
+          "type": "object",
+          "properties": {
+            "baseUrl": {
+              "type": "string",
+              "allOf": [
+                {
+                  "minLength": 1
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "trivy": {
+          "type": "object",
+          "properties": {
+            "trivyPath": {
+              "type": "string",
+              "allOf": [
+                {
+                  "minLength": 1
+                }
+              ]
+            },
+            "severity": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "allOf": [
+                  {
+                    "minLength": 1
+                  }
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "git": {
+          "type": "object",
+          "properties": {
+            "branch": {
+              "type": "object",
+              "properties": {
+                "create": {
+                  "type": "boolean"
+                },
+                "template": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "push": {
+              "anyOf": [
+                {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "remote": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "github": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "object",
+              "properties": {
+                "$env": {
+                  "type": "string",
+                  "allOf": [
+                    {
+                      "minLength": 1
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "$env"
+              ],
+              "additionalProperties": false
+            },
+            "pullRequest": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string"
+                },
+                "draft": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "title": "Sanofi Security Autofixer configuration"
+}

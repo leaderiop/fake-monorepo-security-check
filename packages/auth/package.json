@@ -1,0 +1,8 @@
+{
+  "name": "@fake-monorepo/auth",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "jsonwebtoken": "8.5.1"
+  }
+}
