@@ -4,7 +4,7 @@
 # exercises a skipped multi-stage alias and hadolint rules (ADD→COPY, last-USER-root, shell CMD).
 FROM debian:11-slim AS build
 WORKDIR /app
-ADD ./app /app
+COPY ./app /app
 USER root
 CMD node app/index.js
 
