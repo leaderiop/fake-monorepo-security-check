@@ -2,5 +2,6 @@
 # + DL4006 (pipefail) hadolint rule. redis is docker.io (trusted), so no untrusted-registry here.
 FROM redis
 WORKDIR /app
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN echo hi | grep h
 CMD ["node", "server.js"]
